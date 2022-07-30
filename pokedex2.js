@@ -1,6 +1,8 @@
 const pokemonCount = 300;
-var pokedex = {}; // {1 : {"name" : "bulbsaur", "img" : url, "type" : ["grass", "poison"], "desc" : "...."} }
+var pokedex = {}; // {1 : {"name" : "bulbasaur", "img" : url, "type" : ["grass", "poison"], "desc" : "...."} }
 
+
+//on Page Load what shows up?
 window.onload = async function() {
     // getPokemon(1);
     for (let i = 1; i <= pokemonCount; i++) {
@@ -12,10 +14,12 @@ window.onload = async function() {
         pokemon.classList.add("pokemon-name");
         pokemon.addEventListener("click", updatePokemon);
         document.getElementById("pokemon-list").append(pokemon);
+        
     }
 
     document.getElementById("pokemon-description").innerText = pokedex[1]["desc"];
-    // console.log(pokedex);
+    
+    console.log(pokedex);
 
 }
 
@@ -28,21 +32,29 @@ async function getPokemon(num) {
     let pokemonName = pokemon["name"];
     let pokemonType = pokemon["types"];
     let pokemonImg = pokemon["sprites"]["front_default"];
+   
+
 
     res = await fetch(pokemon["species"]["url"]);
     let pokemonDesc = await res.json();
     // console.log(pokemonDesc);
     pokemonDesc = pokemonDesc["flavor_text_entries"][9]["flavor_text"];
-
-
-    res = await fetch(pokemon["moves"]["url"]);
-    let pokemonMoves = await res.json();
+    let pokemonMoves = pokemon["moves"]["move"]; 
     
-    pokemonMoves = pokemonMoves["name"]
 
-    pokedex[num] = {"name" : pokemonName, "img" : pokemonImg, "types" : pokemonType, "desc" : pokemonDesc,};
+    // res = await fetch(pokemon["moves"]["url"]);
+    // let pokemonMoves = await res.json();
+    // console.log(pokemonMoves);
+    // pokemonMoves = pokemonMoves["name"][1]
+
+    pokedex[num] = {"name" : pokemonName, "img" : pokemonImg, "types" : pokemonType, "desc" : pokemonDesc, "moves" : pokemonMoves};
 
 }
+
+
+
+
+
 
 function updatePokemon(){
     document.getElementById("pokemon-img").src = pokedex[this.id]["img"];
@@ -65,6 +77,8 @@ function updatePokemon(){
 
     //update description
     document.getElementById("pokemon-description").innerText = pokedex [this.id]["desc"]
+
+
 
 } 
 
